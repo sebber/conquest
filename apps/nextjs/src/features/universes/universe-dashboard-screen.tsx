@@ -9,8 +9,8 @@ import { useUniverse } from "./queries";
 function JoinUniverseButton({ universe }: { universe: Universe }) {
   const trpcContext = trpc.useContext();
   const join = trpc.universe.join.useMutation({
-    onSuccess() {
-      trpcContext.universe.playingIn.invalidate({ id: universe.id });
+    async onSuccess() {
+      await trpcContext.universe.playingIn.invalidate({ id: universe.id });
     },
   });
 
