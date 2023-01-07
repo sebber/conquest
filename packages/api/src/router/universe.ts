@@ -17,16 +17,18 @@ export const universeRouter = router({
   playingIn: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      return ctx.prisma.universe.findMany({
+      const universe = await ctx.prisma.universe.findFirst({
         where: {
           id: input.id,
-          players: { some: { id: ctx.session.user.id } },
+          members: { some: { userId: ctx.session.user.id } },
         },
       });
+      return !!universe;
     }),
   join: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
       const universe = await ctx.prisma.universe.findFirst({
         where: { id: input.id },
       });
@@ -36,29 +38,25 @@ export const universeRouter = router({
           message: "Universe was not found",
         });
       }
-      const universesPlayingIn = await ctx.prisma.universe.findMany({
+      const universeMembership = await ctx.prisma.universeMembership.findFirst({
         where: {
-          players: {
-            some: {
-              id: ctx.session.user.id,
-            },
-          },
+          userId: userId,
+          universeId: universe.id,
         },
       });
 
-      const isAlreadyPlayingHere = universesPlayingIn
-        .map((u) => u.id)
-        .includes(universe.id);
-      if (isAlreadyPlayingHere) {
+      if (universeMembership) {
         throw new TRPCError({
           code: "CONFLICT",
           message: "You are already playing in this universe",
         });
       }
 
-      return ctx.prisma.universe.update({
-        where: { id: universe.id },
-        data: { players: { connect: { id: ctx.session.user.id } } },
+      return ctx.prisma.universeMembership.create({
+        data: {
+          userId,
+          universeId: universe.id,
+        },
       });
     }),
 });

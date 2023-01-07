@@ -54,7 +54,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    universes     Universe[]
+    universeMemberships UniverseMembership[]
 }
 
 model VerificationToken {
@@ -68,5 +68,15 @@ model VerificationToken {
 model Universe {
     id String @id @default(cuid())
     name String
-    players User[]
+
+    members UniverseMembership[]
+}
+
+model UniverseMembership {
+    id String @id @default(cuid())
+    userId String
+    universeId String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    universe Universe @relation(fields: [universeId], references: [id], onDelete: Cascade)
 }
