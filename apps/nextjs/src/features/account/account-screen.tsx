@@ -1,4 +1,4 @@
-import AccountsNavigation from "../shared/accounts-navigation";
+import AccountsNavigation from "./accounts-navigation";
 import Page from "../shared/page";
 
 export default function AccountScreen() {

@@ -1,4 +1,4 @@
-import LeftNavigation from "./left-navigation";
+import LeftNavigation from "../shared/left-navigation";
 
 export default function AccountsNavigation() {
   const links = [{ href: `/account`, label: "Profile" }];

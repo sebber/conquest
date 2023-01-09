@@ -13,7 +13,7 @@ export function UniversePageLayout({
   return (
     <Page withGlobalNav>
       <div className="container mx-auto">
-        <div className="flex w-full flex-row justify-self-center">
+        <div className="flex w-full flex-row space-x-2 justify-self-center">
           {leftColumn && <div>{leftColumn}</div>}
           <main className="flex w-full flex-col">{children}</main>
         </div>

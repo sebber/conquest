@@ -10,7 +10,7 @@ function NavLink({ href, children }: { href: string; children: string }) {
 
 export default function TopNavigation() {
   return (
-    <nav className="flex flex-row items-center">
+    <nav className="flex flex-row items-center space-x-4">
       <NavLink href="/dashboard">Dashboard</NavLink>
       <NavLink href="/universes">Universes</NavLink>
       <NavLink href="/account">Account</NavLink>

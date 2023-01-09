@@ -17,7 +17,7 @@ export default function LeftNavigation({
   links: { href: string; label: string }[];
 }) {
   return (
-    <nav className="flex w-48 flex-col space-y-1">
+    <nav className="flex w-48 flex-col space-y-2">
       {links.map((link) => (
         <NavLink key={link.href} href={link.href}>
           {link.label}
